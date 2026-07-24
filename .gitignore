@@ -1,4 +1,25 @@
 # Compiled class file
+# # Maven
+target/
+!.mvn/wrapper/maven-wrapper.jar
+
+# Spring Boot
+*.log
+
+# MySQL data
+mysql-data/
+
+# Environment files
+.env
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+
+# OS files
+.DS_Store
+Thumbs.db
 *.class
 
 # Log file
