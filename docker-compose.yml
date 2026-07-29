@@ -2,7 +2,6 @@ services:
   java_app:
     build:
       context: .
-    container_name: expenseapp
     networks:
       - expense-app-nw
     environment:
