@@ -12,7 +12,14 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh 'mvn clean package -DskipTests'
+                sh '''
+                    export JAVA_HOME=/usr/lib/jvm/java-21-amazon-corretto
+                    export PATH=/opt/maven/bin:$JAVA_HOME/bin:$PATH
+
+                    java -version
+                    /opt/maven/bin/mvn -version
+                    /opt/maven/bin/mvn clean package -DskipTests
+                '''
             }
         }
 
