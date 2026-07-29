@@ -37,8 +37,7 @@ pipeline {
         '''
     }
 }
-            }
-        }
+        
 
         stage('Verify') {
             steps {
