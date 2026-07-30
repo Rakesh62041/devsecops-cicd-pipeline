@@ -30,9 +30,9 @@ pipeline {
                         export JAVA_HOME=/usr/lib/jvm/java-21-amazon-corretto
                         export PATH=/opt/maven/bin:$JAVA_HOME/bin:$PATH
 
-       /opt/maven/bin/mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.11.0.3922:sonar \
-         -Dsonar.projectKey=devsecops-cicd-pipeline \
-         -Dsonar.projectName=devsecops-cicd-pipeline
+                        /opt/maven/bin/mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.11.0.3922:sonar \
+                        -Dsonar.projectKey=devsecops-cicd-pipeline \
+                        -Dsonar.projectName=devsecops-cicd-pipeline
                     '''
                 }
             }
@@ -49,6 +49,27 @@ pipeline {
                 sh '''
                     docker compose down --remove-orphans || true
                     docker compose up -d
+                '''
+            }
+        }
+
+        stage('Health Check') {
+            steps {
+                sh '''
+                    echo "Waiting for application to start..."
+
+                    for i in {1..12}; do
+                        if curl -fsS http://localhost:8082 > /dev/null; then
+                            echo "Application health check passed"
+                            exit 0
+                        fi
+
+                        echo "Application is not ready yet. Retrying..."
+                        sleep 5
+                    done
+
+                    echo "Application health check failed"
+                    exit 1
                 '''
             }
         }
