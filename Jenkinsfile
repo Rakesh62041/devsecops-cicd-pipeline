@@ -30,10 +30,19 @@ pipeline {
                         export JAVA_HOME=/usr/lib/jvm/java-21-amazon-corretto
                         export PATH=/opt/maven/bin:$JAVA_HOME/bin:$PATH
 
-                        /opt/maven/bin/mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.11.0.3922:sonar \
+                        /opt/maven/bin/mvn \
+                        org.sonarsource.scanner.maven:sonar-maven-plugin:3.11.0.3922:sonar \
                         -Dsonar.projectKey=devsecops-cicd-pipeline \
                         -Dsonar.projectName=devsecops-cicd-pipeline
                     '''
+                }
+            }
+        }
+
+        stage('Quality Gate') {
+            steps {
+                timeout(time: 5, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
                 }
             }
         }
@@ -80,4 +89,4 @@ pipeline {
             }
         }
     }
-}
+}}
