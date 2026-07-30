@@ -23,6 +23,21 @@ pipeline {
             }
         }
 
+        stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv('SonarQube') {
+                    sh '''
+                        export JAVA_HOME=/usr/lib/jvm/java-21-amazon-corretto
+                        export PATH=/opt/maven/bin:$JAVA_HOME/bin:$PATH
+
+                        /opt/maven/bin/mvn sonar:sonar \
+                        -Dsonar.projectKey=devsecops-cicd-pipeline \
+                        -Dsonar.projectName=devsecops-cicd-pipeline
+                    '''
+                }
+            }
+        }
+
         stage('Docker Build') {
             steps {
                 sh 'docker compose build'
@@ -30,14 +45,13 @@ pipeline {
         }
 
         stage('Deploy') {
-    steps {
-        sh '''
-            docker compose down --remove-orphans || true
-            docker compose up -d
-        '''
-    }
-}
-        
+            steps {
+                sh '''
+                    docker compose down --remove-orphans || true
+                    docker compose up -d
+                '''
+            }
+        }
 
         stage('Verify') {
             steps {
