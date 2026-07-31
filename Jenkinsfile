@@ -24,17 +24,24 @@ pipeline {
           }
 
        stage('OWASP Dependency Check') {
-            steps {
+    environment {
+        NVD_API_KEY = credentials('nvd-api-key')
+    }
+
+    steps {
+
         sh 'mkdir -p dependency-check-report'
 
-        dependencyCheck additionalArguments: '''
+        dependencyCheck additionalArguments: """
             --scan .
             --format HTML
             --format XML
             --out dependency-check-report
-        ''', odcInstallation: 'OWASP-Dependency-Check'
+            --nvdApiKey $NVD_API_KEY
+        """,
+        odcInstallation: 'OWASP-Dependency-Check'
     }
-} 
+}
      stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('SonarQube') {
