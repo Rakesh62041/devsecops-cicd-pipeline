@@ -20,19 +20,21 @@ pipeline {
                     /opt/maven/bin/mvn -version
                     /opt/maven/bin/mvn clean package -DskipTests
                 '''
-            }
-        }
+              }
+          }
 
-             stage('OWASP Dependency Check') {
+       stage('OWASP Dependency Check') {
             steps {
-                dependencyCheck additionalArguments: '''
-                    --scan .
-                    --format HTML
-                    --format XML
-                    --out dependency-check-report
-                ''', odcInstallation: 'OWASP-Dependency-Check'
-            }
-        }   
+        sh 'mkdir -p dependency-check-report'
+
+        dependencyCheck additionalArguments: '''
+            --scan .
+            --format HTML
+            --format XML
+            --out dependency-check-report
+        ''', odcInstallation: 'OWASP-Dependency-Check'
+    }
+} 
      stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('SonarQube') {
