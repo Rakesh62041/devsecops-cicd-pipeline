@@ -29,16 +29,15 @@ pipeline {
     }
 
     steps {
-
         sh 'mkdir -p dependency-check-report'
 
-        dependencyCheck additionalArguments: """
+        dependencyCheck additionalArguments: '''
             --scan .
             --format HTML
             --format XML
             --out dependency-check-report
             --nvdApiKey $NVD_API_KEY
-        """,
+        ''',
         odcInstallation: 'OWASP-Dependency-Check'
     }
 }
