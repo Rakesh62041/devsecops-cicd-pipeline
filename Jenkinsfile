@@ -23,7 +23,17 @@ pipeline {
             }
         }
 
-        stage('SonarQube Analysis') {
+             stage('OWASP Dependency Check') {
+            steps {
+                dependencyCheck additionalArguments: '''
+                    --scan .
+                    --format HTML
+                    --format XML
+                    --out dependency-check-report
+                ''', odcInstallation: 'OWASP-Dependency-Check'
+            }
+        }   
+     stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('SonarQube') {
                     sh '''
