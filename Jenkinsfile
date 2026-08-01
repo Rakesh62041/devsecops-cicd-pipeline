@@ -77,7 +77,7 @@ pipeline {
             trivy image \
               --severity HIGH,CRITICAL \
               --ignore-unfixed \
-              --exit-code 0 \
+              --exit-code 1 \
               devsecops-pipeline-java_app:latest
         '''
     }
