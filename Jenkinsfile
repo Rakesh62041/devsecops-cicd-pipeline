@@ -71,6 +71,18 @@ pipeline {
             }
         }
 
+        stage('Trivy Image Scan') {
+    steps {
+        sh '''
+            trivy image \
+              --severity HIGH,CRITICAL \
+              --ignore-unfixed \
+              --exit-code 0 \
+              devsecops-pipeline-java_app:latest
+        '''
+    }
+}
+
         stage('Deploy') {
             steps {
                 sh '''
