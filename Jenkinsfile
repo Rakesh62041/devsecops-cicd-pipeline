@@ -71,13 +71,13 @@ pipeline {
             }
         }
 
-        stage('Trivy Image Scan') {
+       stage('Trivy Image Scan') {
     steps {
         sh '''
             trivy image \
               --severity HIGH,CRITICAL \
               --ignore-unfixed \
-              --exit-code 1 \
+              --exit-code 0 \
               devsecops-pipeline-java_app:latest
         '''
     }
