@@ -20,40 +20,51 @@ pipeline {
                     /opt/maven/bin/mvn -version
                     /opt/maven/bin/mvn clean package -DskipTests
                 '''
-              }
-          }
-
-       stage('OWASP Dependency Check') {
-    environment {
-        NVD_API_KEY = credentials('nvd-api-key')
-    }
-
-    steps {
-        sh 'mkdir -p dependency-check-report'
-
-        dependencyCheck additionalArguments: '''
-            --scan .
-            --format HTML
-            --format XML
-            --out dependency-check-report
-            --nvdApiKey $NVD_API_KEY
-        ''',
-        odcInstallation: 'OWASP-Dependency-Check'
-    }
-}
-     stage('SonarQube Analysis') {
-    steps {
-        withSonarQubeEnv('SonarQube') {
-            withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
-                sh '''
-                mvn sonar:sonar \
-                -Dsonar.projectKey=devsecops-cicd-pipeline \
-                -Dsonar.login=$SONAR_TOKEN
-                '''
             }
         }
-    }
 
+        stage('OWASP Dependency Check') {
+            environment {
+                NVD_API_KEY = credentials('nvd-api-key')
+            }
+
+            steps {
+                sh 'mkdir -p dependency-check-report'
+
+                dependencyCheck(
+                    additionalArguments: '''
+                        --scan .
+                        --format HTML
+                        --format XML
+                        --out dependency-check-report
+                        --nvdApiKey $NVD_API_KEY
+                    ''',
+                    odcInstallation: 'OWASP-Dependency-Check'
+                )
+            }
+        }
+
+        stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv('SonarQube') {
+                    withCredentials([
+                        string(
+                            credentialsId: 'sonar-token',
+                            variable: 'SONAR_TOKEN'
+                        )
+                    ]) {
+                        sh '''
+                            export JAVA_HOME=/usr/lib/jvm/java-21-amazon-corretto
+                            export PATH=/opt/maven/bin:$JAVA_HOME/bin:$PATH
+
+                            /opt/maven/bin/mvn sonar:sonar \
+                              -Dsonar.projectKey=devsecops-cicd-pipeline \
+                              -Dsonar.login=$SONAR_TOKEN
+                        '''
+                    }
+                }
+            }
+        }
 
         stage('Quality Gate') {
             steps {
@@ -69,17 +80,17 @@ pipeline {
             }
         }
 
-       stage('Trivy Image Scan') {
-    steps {
-        sh '''
-            trivy image \
-              --severity HIGH,CRITICAL \
-              --ignore-unfixed \
-              --exit-code 0 \
-              devsecops-cicd-pipeline-java_app:latest
-        '''
-    }
-}
+        stage('Trivy Image Scan') {
+            steps {
+                sh '''
+                    trivy image \
+                      --severity HIGH,CRITICAL \
+                      --ignore-unfixed \
+                      --exit-code 0 \
+                      devsecops-cicd-pipeline-java_app:latest
+                '''
+            }
+        }
 
         stage('Deploy') {
             steps {
@@ -117,5 +128,4 @@ pipeline {
             }
         }
     }
-}
 }
