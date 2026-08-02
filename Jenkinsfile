@@ -44,7 +44,7 @@ pipeline {
             }
         }
 
-      stage('SonarQube Analysis') {
+     stage('SonarQube Analysis') {
     steps {
         withSonarQubeEnv('SonarQube') {
             withCredentials([
@@ -54,7 +54,8 @@ pipeline {
                 )
             ]) {
                 sh '''
-                    /opt/maven/bin/mvn sonar:sonar \
+                    /opt/maven/bin/mvn \
+                    org.sonarsource.scanner.maven:sonar-maven-plugin:3.11.0.3922:sonar \
                     -Dsonar.projectKey=devsecops-cicd-pipeline \
                     -Dsonar.token=$SONAR_TOKEN
                 '''
