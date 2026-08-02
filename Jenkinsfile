@@ -79,19 +79,23 @@ pipeline {
         }
 
         stage('Trivy Image Scan') {
-            steps {
-                sh '''
-                    mkdir -p /data/trivy-cache
+    steps {
+        sh '''
+            mkdir -p /data/trivy-cache
 
-                    trivy image \
-                      --cache-dir /data/trivy-cache \
-                      --severity HIGH,CRITICAL \
-                      --ignore-unfixed \
-                      --exit-code 0 \
-                      devsecops-cicd-pipeline-java_app:latest
-                '''
-            }
-        }
+            docker image inspect \
+              devsecops-pipeline-java_app:latest
+
+            trivy image \
+              --cache-dir /data/trivy-cache \
+              --scanners vuln \
+              --severity HIGH,CRITICAL \
+              --ignore-unfixed \
+              --exit-code 0 \
+              devsecops-pipeline-java_app:latest
+        '''
+    }
+}
                 stage('Push Image to Docker Hub') {
             steps {
                 withCredentials([
