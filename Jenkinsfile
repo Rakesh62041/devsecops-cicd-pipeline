@@ -44,27 +44,24 @@ pipeline {
             }
         }
 
-        stage('SonarQube Analysis') {
-            steps {
-                withSonarQubeEnv('SonarQube') {
-                    withCredentials([
-                        string(
-                            credentialsId: 'sonar-token',
-                            variable: 'SONAR_TOKEN'
-                        )
-                    ]) {
-                        sh '''
-                            export JAVA_HOME=/usr/lib/jvm/java-21-amazon-corretto
-                            export PATH=/opt/maven/bin:$JAVA_HOME/bin:$PATH
-
-                            /opt/maven/bin/mvn sonar:sonar \
-                              -Dsonar.projectKey=devsecops-cicd-pipeline \
-                              -Dsonar.login=$SONAR_TOKEN
-                        '''
-                    }
-                }
+      stage('SonarQube Analysis') {
+    steps {
+        withSonarQubeEnv('SonarQube') {
+            withCredentials([
+                string(
+                    credentialsId: 'sonarqube-token',
+                    variable: 'SONAR_TOKEN'
+                )
+            ]) {
+                sh '''
+                    /opt/maven/bin/mvn sonar:sonar \
+                    -Dsonar.projectKey=devsecops-cicd-pipeline \
+                    -Dsonar.token=$SONAR_TOKEN
+                '''
             }
         }
+    }
+}
 
         stage('Quality Gate') {
             steps {
