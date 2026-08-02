@@ -79,16 +79,19 @@ pipeline {
         }
 
         stage('Trivy Image Scan') {
-            steps {
-                sh '''
-                    trivy image \
-                      --severity HIGH,CRITICAL \
-                      --ignore-unfixed \
-                      --exit-code 0 \
-                      devsecops-cicd-pipeline-java_app:latest
-                '''
-            }
-        }
+    steps {
+        sh '''
+            mkdir -p /data/trivy-cache
+
+            trivy image \
+              --cache-dir /data/trivy-cache \
+              --severity HIGH,CRITICAL \
+              --ignore-unfixed \
+              --exit-code 0 \
+              devsecops-cicd-pipeline-java_app:latest
+        '''
+    }
+}>
 
         stage('Deploy') {
             steps {
