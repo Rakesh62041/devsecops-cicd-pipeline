@@ -111,7 +111,7 @@ pipeline {
                         --password-stdin
 
                         docker tag \
-                        devsecops-cicd-pipeline-java_app:latest \
+                        devsecops-pipeline-java_app:latest \
                         rakeshsharma620/expense-tracker:latest
 
                         docker push \
