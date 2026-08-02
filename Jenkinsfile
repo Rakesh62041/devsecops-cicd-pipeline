@@ -93,14 +93,25 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
-            steps {
-                sh '''
-                    docker compose down --remove-orphans || true
-                    docker compose up -d
-                '''
-            }
-        }
+       stage('Deploy') {
+    steps {
+        sh '''
+            echo "Stopping old application containers..."
+
+            docker rm -f \
+            devsecops-cicd-pipeline-java_app-1 \
+            devsecops-cicd-pipeline-mysql_db-1 \
+            2>/dev/null || true
+
+            echo "Starting new application containers..."
+
+            docker compose up -d --force-recreate
+
+            echo "Current container status:"
+            docker compose ps
+        '''
+    }
+}
 
         stage('Health Check') {
             steps {
