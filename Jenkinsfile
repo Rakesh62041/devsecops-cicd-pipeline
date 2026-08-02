@@ -76,7 +76,7 @@ pipeline {
               --severity HIGH,CRITICAL \
               --ignore-unfixed \
               --exit-code 0 \
-              devsecops-pipeline-java_app:latest
+              devsecops-cicd-pipeline-java_app:latest
         '''
     }
 }
@@ -117,4 +117,5 @@ pipeline {
             }
         }
     }
+}
 }
