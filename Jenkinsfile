@@ -92,6 +92,32 @@ pipeline {
                 '''
             }
         }
+                stage('Push Image to Docker Hub') {
+            steps {
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: 'dockerhub-credentials',
+                        usernameVariable: 'DOCKERHUB_USERNAME',
+                        passwordVariable: 'DOCKERHUB_TOKEN'
+                    )
+                ]) {
+                    sh '''
+                        echo "$DOCKERHUB_TOKEN" | docker login \
+                        -u "$DOCKERHUB_USERNAME" \
+                        --password-stdin
+
+                        docker tag \
+                        devsecops-cicd-pipeline-java_app:latest \
+                        rakeshsharma620/expense-tracker:latest
+
+                        docker push \
+                        rakeshsharma620/expense-tracker:latest
+
+                        docker logout
+                    '''
+                }
+            }
+        }
 
        stage('Deploy') {
     steps {
