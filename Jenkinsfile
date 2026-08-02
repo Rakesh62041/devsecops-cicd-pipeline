@@ -44,25 +44,25 @@ pipeline {
             }
         }
 
-     stage('SonarQube Analysis') {
-    steps {
-        withSonarQubeEnv('SonarQube') {
-            withCredentials([
-                string(
-                    credentialsId: 'sonarqube-token',
-                    variable: 'SONAR_TOKEN'
-                )
-            ]) {
-                sh '''
-                    /opt/maven/bin/mvn \
-                    org.sonarsource.scanner.maven:sonar-maven-plugin:3.11.0.3922:sonar \
-                    -Dsonar.projectKey=devsecops-cicd-pipeline \
-                    -Dsonar.token=$SONAR_TOKEN
-                '''
+        stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv('SonarQube') {
+                    withCredentials([
+                        string(
+                            credentialsId: 'sonarqube-token',
+                            variable: 'SONAR_TOKEN'
+                        )
+                    ]) {
+                        sh '''
+                            /opt/maven/bin/mvn \
+                            org.sonarsource.scanner.maven:sonar-maven-plugin:3.11.0.3922:sonar \
+                            -Dsonar.projectKey=devsecops-cicd-pipeline \
+                            -Dsonar.token=$SONAR_TOKEN
+                        '''
+                    }
+                }
             }
         }
-    }
-}
 
         stage('Quality Gate') {
             steps {
@@ -79,19 +79,19 @@ pipeline {
         }
 
         stage('Trivy Image Scan') {
-    steps {
-        sh '''
-            mkdir -p /data/trivy-cache
+            steps {
+                sh '''
+                    mkdir -p /data/trivy-cache
 
-            trivy image \
-              --cache-dir /data/trivy-cache \
-              --severity HIGH,CRITICAL \
-              --ignore-unfixed \
-              --exit-code 0 \
-              devsecops-cicd-pipeline-java_app:latest
-        '''
-    }
-}>
+                    trivy image \
+                      --cache-dir /data/trivy-cache \
+                      --severity HIGH,CRITICAL \
+                      --ignore-unfixed \
+                      --exit-code 0 \
+                      devsecops-cicd-pipeline-java_app:latest
+                '''
+            }
+        }
 
         stage('Deploy') {
             steps {
