@@ -1,5 +1,5 @@
+cat > README.md << 'EOF'
 # DevSecOps CI/CD Pipeline for Expense Tracker Application
-=======
 
 ## Project Overview
 
@@ -8,6 +8,8 @@ This project demonstrates an end-to-end DevSecOps CI/CD pipeline for a Java Spri
 The application is automatically built, tested, analyzed for code quality and security vulnerabilities, containerized, pushed to Docker Hub, and deployed using Docker Compose on AWS EC2.
 
 Security is integrated into the CI/CD pipeline using SonarQube, OWASP Dependency-Check, and Trivy.
+
+Developed by Rakesh Sharma
 
 ---
 
@@ -40,9 +42,8 @@ Docker Hub
     ↓
 AWS EC2 Deployment
     ↓
-## DevSecOps Pipeline Flow
-
-GitHub → Jenkins → Maven Build → OWASP Dependency Check → SonarQube Analysis → Quality Gate → Docker Build → Trivy Image Scan → Docker Hub → Docker Compose Deployment → Health Check → Verification
+Application Health Check
+```
 
 ---
 
@@ -70,21 +71,16 @@ GitHub → Jenkins → Maven Build → OWASP Dependency Check → SonarQube Anal
 ## Pipeline Stages
 
 ### 1. Checkout SCM
-
 Jenkins pulls the latest application source code from the GitHub repository.
 
 ### 2. Build
-
 Maven compiles the Java application and generates the Spring Boot JAR file.
 
 ### 3. OWASP Dependency Check
-
 OWASP Dependency-Check scans application dependencies for known vulnerabilities and CVEs.
 
 ### 4. SonarQube Analysis
-
 SonarQube analyzes the source code for:
-
 - Bugs
 - Code smells
 - Security vulnerabilities
@@ -92,48 +88,32 @@ SonarQube analyzes the source code for:
 - Code quality issues
 
 ### 5. Quality Gate
-
 The Jenkins pipeline checks the SonarQube Quality Gate result before continuing.
 
 ### 6. Docker Build
-
 A Docker image is created using a multi-stage Dockerfile.
 
 ### 7. Trivy Image Scan
-
 Trivy scans the Docker image for HIGH and CRITICAL vulnerabilities.
-
 The scan is configured to generate vulnerability results without stopping the pipeline.
 
 ### 8. Push Image to Docker Hub
-
 The Docker image is tagged and pushed to Docker Hub.
 
 Docker Hub image:
-
 `rakeshsharma620/expense-tracker:latest`
 
 ### 9. Deploy
-
 The old application containers are removed and new application and MySQL containers are started using Docker Compose.
 
 ### 10. Health Check
-
 Jenkins checks the application endpoint using curl and waits until the application becomes available.
 
 ### 11. Verify
-
 Docker Compose verifies that:
-
 - The Spring Boot application container is running
 - The MySQL container is healthy
 - The application port is available
-
----
-
-## Architecture Diagram
-
-![DevSecOps Architecture](screenshots/12-Architecture-image.png)
 
 ---
 
@@ -203,7 +183,5 @@ Docker Compose verifies that:
 
 The application is deployed on AWS EC2 using Docker Compose.
 
-Application port:
-
-```text
-8082
+Application port: `8082`
+EOF
