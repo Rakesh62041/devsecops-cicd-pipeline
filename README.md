@@ -139,63 +139,63 @@ Docker Compose verifies that:
 
 ## Jenkins Pipeline Success
 
-![Jenkins Pipeline Success](screenshots/01-jenkins-pipeline-success.png.png)
+![Jenkins Pipeline Success](screenshots/01-jenkins-pipeline-success.png)
 
 ---
 
 ## Jenkins Pipeline Stages
 
-![Jenkins Pipeline Stages](screenshots/02-jenkins-pipeline-stages.png.png)
+![Jenkins Pipeline Stages](screenshots/02-jenkins-pipeline-stages.png)
 
 ---
 
 ## SonarQube Dashboard
 
-![SonarQube Dashboard](screenshots/03-sonarqube-dashboard.png.png)
+![SonarQube Dashboard](screenshots/03-sonarqube-dashboard.png)
 
-![SonarQube Quality Analysis](screenshots/04-sonarqube-dashboard.png.png)
+![SonarQube Quality Analysis](screenshots/04-sonarqube-dashboard.png)
 
 ---
 
 ## OWASP Dependency Check
 
-![OWASP Dependency Check](screenshots/05-owasp-dependency-check.png.png)
+![OWASP Dependency Check](screenshots/05-owasp-dependency-check.png)
 
 ---
 
 ## Trivy Image Security Scan
 
-![Trivy Image Scan](screenshots/06-trivy-image-scan.png.png)
+![Trivy Image Scan](screenshots/06-trivy-image-scan.png)
 
 ---
 
 ## Docker Containers
 
-![Docker Containers Running](screenshots/07-docker-containers-running.png.png)
+![Docker Containers Running](screenshots/07-docker-containers-running.png)
 
 ---
 
 ## Application Running
 
-![Expense Tracker Application](screenshots/08-application-running.png.png)
+![Expense Tracker Application](screenshots/08-application-running.png)
 
 ---
 
 ## GitHub Repository
 
-![GitHub Repository](screenshots/09-github-repository.png.png)
+![GitHub Repository](screenshots/09-github-repository.png)
 
 ---
 
 ## AWS EC2 Deployment
 
-![AWS EC2 Instance](screenshots/10-ec2-instance-running.png.png)
+![AWS EC2 Instance](screenshots/10-ec2-instance-running.png)
 
 ---
 
 ## AWS Security Group
 
-![AWS Security Group Rules](screenshots/11-security-group-rules.png.png)
+![AWS Security Group Rules](screenshots/11-security-group-rules.png)
 
 ---
 
