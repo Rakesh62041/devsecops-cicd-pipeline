@@ -1,15 +1,45 @@
 # DevSecOps CI/CD Pipeline for Expense Tracker Application
+=======
 
 ## Project Overview
 
 This project demonstrates an end-to-end DevSecOps CI/CD pipeline for a Java Spring Boot Expense Tracker application.
 
-The pipeline automatically performs source code checkout, application build, dependency security scanning, code quality analysis, Docker image creation, container image vulnerability scanning, Docker Hub publishing, application deployment, health checks, and deployment verification.
+The application is automatically built, tested, analyzed for code quality and security vulnerabilities, containerized, pushed to Docker Hub, and deployed using Docker Compose on AWS EC2.
 
-The application uses Spring Boot and MySQL and is deployed using Docker Compose.
+Security is integrated into the CI/CD pipeline using SonarQube, OWASP Dependency-Check, and Trivy.
 
 ---
 
+## Project Architecture
+
+![DevSecOps Architecture](screenshots/12-Architecture-image.png)
+
+---
+
+## CI/CD Pipeline Flow
+
+```text
+Developer
+    ↓
+GitHub Repository
+    ↓
+Jenkins Pipeline
+    ↓
+Maven Build
+    ↓
+SonarQube Code Quality Analysis
+    ↓
+OWASP Dependency-Check
+    ↓
+Docker Image Build
+    ↓
+Trivy Image Vulnerability Scan
+    ↓
+Docker Hub
+    ↓
+AWS EC2 Deployment
+    ↓
 ## DevSecOps Pipeline Flow
 
 GitHub → Jenkins → Maven Build → OWASP Dependency Check → SonarQube Analysis → Quality Gate → Docker Build → Trivy Image Scan → Docker Hub → Docker Compose Deployment → Health Check → Verification
